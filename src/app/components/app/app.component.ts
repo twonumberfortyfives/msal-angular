@@ -41,6 +41,7 @@ export class AppComponent implements OnInit, OnDestroy{ // OnInit calls once whe
   }
 
   ngOnInit(): void {
+    // connecting to pipeline filtering stream by status and subscribe only on None iteraction status. Follow the stream until instance attr _destroying$ is not changed.
     this.msalBroadcastService.inProgress$
       .pipe(
         filter((status: InteractionStatus) => status === InteractionStatus.None),
@@ -49,7 +50,7 @@ export class AppComponent implements OnInit, OnDestroy{ // OnInit calls once whe
       .subscribe(() => {
         this.setLoginDisplay()
       })
-    
+    // connecting to pipeline filtering stream and subscribe only on event type like successful token acquisition
     this.msalBroadcastService.msalSubject$.pipe(
       filter(
         (msg: EventMessage) => msg.eventType === EventType.ACQUIRE_TOKEN_SUCCESS)
